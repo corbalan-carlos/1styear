@@ -17,7 +17,7 @@ public class Ejercicio5 {
 		System.out.print("Soy un modesto ");
 		System.out.print("programa de ordenador...\n");
 		System.out.println("Bienvenido al Curso.\t" + "Este es el saludo nº " + numOrden);
-		numOrden++;			//Operador de incremento post-use
+		numOrden++;			//Operador de incremento post-uso
 		System.out.println("Bienvenido a Java.\t" + "Este es el saludo nº " + numOrden);
 		System.out.println("\nFin programa..."); 
 	}
