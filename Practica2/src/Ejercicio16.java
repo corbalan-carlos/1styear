@@ -5,7 +5,7 @@ public class Ejercicio16 {
 	public static void main(String[] args) {
 		Scanner scanner=new Scanner(System.in);
 		int num=0; 
-		int decimales=0;
+		long decimales=0;
 		double buffer;
 		int aprox;
 		System.out.print("Introduzca un entero\n");
@@ -22,10 +22,9 @@ public class Ejercicio16 {
 			System.out.print("Desa continuar?(Y/N)\n");
 			if (scanner.next().matches("N|n")) break;
 		}
-		System.out.print("A cuantos decimales te gustaria aprozimar?");
+		System.out.print("A cuantos decimales le gustaria aproximar?\n");
 		aprox=scanner.nextInt();
-		int a=decimales/(int) Math.pow(10, aprox);
-		System.out.print(a);
-		}
+		System.out.print();
+	}
 
 }
