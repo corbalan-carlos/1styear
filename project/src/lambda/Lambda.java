@@ -4,7 +4,7 @@ public class Lambda {
 
 	public static void main(String[] args) {
 		Lambda a=new Lambda();
-		a.intento(a::cosa);
+		a.intento(()->{System.out.print("a"); });
 	}
 	void intento(Intento a) {
 		a.doThing();
