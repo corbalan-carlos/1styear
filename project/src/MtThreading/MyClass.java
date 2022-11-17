@@ -1,8 +1,8 @@
 package MtThreading;
 public class MyClass implements Runnable {
 	public void run() {
-		int number=10000,counter=3;
-		System.out.print(System.currentTimeMillis()+"\n");
+		int number=100000,counter=3;
+	//	System.out.print(System.currentTimeMillis()+"\n");
 		switch (number) {
 			case 1: System.out.print("0\n");
 					counter=0;
@@ -39,6 +39,6 @@ public class MyClass implements Runnable {
 			}
 		}
 		System.out.print(counter+"\n");
-		System.out.print(System.currentTimeMillis()+"");
+	//	System.out.print(System.currentTimeMillis()+"");
 	}
 }
