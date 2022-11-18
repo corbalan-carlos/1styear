@@ -1,14 +1,17 @@
 
+import java.time.LocalTime;
 import java.util.*;
 public class Ejercicio22 {
 		public static void main(String args[]) {
 			int number,counter=3;
 			Scanner scanner=new Scanner(System.in);
-			System.out.print("Dame un numero mayor que 0\n");
-			while (true) {
+			//System.out.print("Dame un numero mayor que 0\n");
+			System.out.print(LocalTime.now()+"\n");
+			/*while (true) {
 				number=scanner.nextInt();
 				if (number>0) break;
-			}
+			}*/
+			number=1000000;
 			switch (number) {
 				case 1: System.out.print("0\n");
 						counter=0;
@@ -31,7 +34,7 @@ public class Ejercicio22 {
 				if (i%5==0) continue;
 				for (int j=3;j<=i;j+=2) {
 					if (i/j==1&&i%j==0) {
-						System.out.print(i+"\n");
+						//System.out.print(i+"\n");
 						counter++;
 						break;
 					}
@@ -43,6 +46,7 @@ public class Ejercicio22 {
 					}*/
 				}
 			}
+			System.out.print(LocalTime.now()+"\n");
 			System.out.print(counter);
 			scanner.close();
 		}
