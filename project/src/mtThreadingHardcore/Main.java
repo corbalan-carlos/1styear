@@ -1,19 +1,17 @@
 package mtThreadingHardcore;
 
 public class Main {
-	
 	public static void main(String[] args) {
-		PrimeSearch a=new PrimeSearch();
+		NumberGiver giver=new NumberGiver();
+		giver.counter=new Counter();
+		PrimeSearch a=new PrimeSearch(0,giver,giver.counter);
+		PrimeSearch b=new PrimeSearch(1,giver,giver.counter);
+		PrimeSearch c=new PrimeSearch(2,giver,giver.counter);
 		a.start();
-		try {
-			Thread.sleep(6000);
-		} catch (Exception E) {
-			
-		}
-		synchronized (a) {
-			a.notify();
-		}
+		b.start();
+		c.start();
+		
 		
 	}
-
+	
 }
