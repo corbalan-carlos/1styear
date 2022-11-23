@@ -21,7 +21,7 @@ public class ValidSudoku {
 		for (int i=0;i<9;i++) {
 			if (!isValidArray(board[i])) return false;
 			for (int j=0;j<9;j++) {
-				auxArr[j]=board[i][j];
+				auxArr[j]=board[j][i];
 			}
 			if (!isValidArray(auxArr)) return false;
 			
