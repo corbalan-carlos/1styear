@@ -6,7 +6,8 @@ public class Ejercicio5 {
 		while (true) {
 			try {
 				System.out.print("Numero de horas trabajadas, las 35 primeras se cobran a 15€\n"
-					+ "pasadas las 35, la hora se cobra a 22€\n");
+					+ "pasadas las 35, la hora se cobra a 22€\n"
+					+ "Para salir escribe cualquier caracter que no sea un numero");
 				System.out.print(calcularSalario(teclado.nextInt())+"\n");
 			} catch (Exception E) {
 				break;
