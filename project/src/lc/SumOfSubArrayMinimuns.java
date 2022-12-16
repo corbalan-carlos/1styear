@@ -3,23 +3,41 @@ import java.util.ArrayList;
 public class SumOfSubArrayMinimuns {
 	public static void main(String[] args) {
 		int[] array= {
-				256,17,5,2,0,255
+			51,94,11,56
+
 		};
-		new  SumOfSubArrayMinimuns().sumSubarrayMins(array);
+		System.out.print(new SumOfSubArrayMinimuns().sumSubarrayMins(array));
 
 	}
 	public int sumSubarrayMins(int[] arr) {
-		ArrayList<Integer> list=new ArrayList<Integer>(arr.length); 
-		for (int i:arr) {
-			list.add(i);
+		if (arr.length==1) return arr[0];
+		final long mod = 1000000007;
+		long sum=0;
+		int [] stack=new int[arr.length];
+		int [] stack2=new int[arr.length];
+		int [] stack3=new int[arr.length];
+		int min=Integer.MAX_VALUE;
+		for (int l=0,j=-1,k=-1;l<arr.length;) {
+			for (int i=0;i<arr.length-l;i++) {	
+				if (arr[i]<min) {
+					stack[++j]=arr[i];
+					stack3[j]=j-i+1;
+					min=arr[i];
+				} else {
+					stack[j]+=min;
+					stack2[++k]=arr[i];
+				}
+			}
+			//System.out.print(j+"\n");
+			k=-1;
+			l=j+1;
+			min=Integer.MAX_VALUE;
+			arr=stack2.clone();
 		}
-		list.sort((Integer x, Integer y)-> {
-			if (x>y) return ;
-			return y;
-		});
-		for (int i:list) {
-			System.out.println(i);
-		}
-	    return 0;
+		for (int i=0;i<arr.length;i++) sum+=stack[i]*stack3[i];
+		for (int i:stack) System.out.print(i+"\n");
+		System.out.print("\n");
+	    return (int) (sum%mod);
 	}
+	
 }
