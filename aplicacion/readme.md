@@ -19,3 +19,10 @@ a
 ---  
 [pog](file://localhost/home/carlos/)  
 <http://github.com/corbalan-carlos/stuff>
+```mermaid  
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
