@@ -1,23 +1,33 @@
 package grupo.aplicacion;
 
+import java.io.Console;
+import java.io.InputStream;
+import java.nio.CharBuffer;
+import java.util.Scanner;
 
 public class Session {
-	User user;
-	boolean logged;
+	private User user;
+	private boolean logged;
 	Session() {
 		this.logged=false;
 		this.user=null;
 	}
-	boolean login() {
+	//TODO 
+	public boolean login(String userS) {
 		
 	}
-	User signup() {
+	//TODO dependiente de login();
+	private boolean correctPassword(String userName) {
+		InputHelper in =new InputHelper(System.in);
+		in.readLine();
+	}
+	public User signup() {
 		
 	}
-	void showUser() {
+	public void showUser() {
 		
 	}
-	void logout() {
+	public void logout() {
 		user=null;
 		logged=false;
 	}
