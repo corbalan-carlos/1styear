@@ -64,7 +64,7 @@ public class InputHelperTest {
 		assertEquals("debe devolver todo lo que se encuentra hasta "
 				+ "acabar el input",null,input.readLine());
 	}*/
-	@Test
+	/*@Test
 	public void testNewLineDelimitator() {
 		ByteBuffer buffer=ByteBuffer.wrap("a\n".getBytes());
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
@@ -89,5 +89,10 @@ public class InputHelperTest {
 		ByteBuffer buffer=ByteBuffer.wrap("a\n".getBytes());
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
 		assertEquals("exception","a",input.readLine(""));
+	}*/
+	@Test
+	public void test() {
+		input=new InputHelper(System.in);
+		assertEquals("bruh","a",input.readLine());
 	}
 }

@@ -1,6 +1,7 @@
 package grupo.aplicacion;
 
 
+
 public class User {
 	String username;
 	String name;
@@ -9,5 +10,4 @@ public class User {
 	String address;
 	String birthdate;
 	String role;
-	
 }

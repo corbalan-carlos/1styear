@@ -11,7 +11,7 @@ public class InputHelper {
 	InputHelper(InputStream input) {
 		this.input=input;
 	}
-	int readChar() {
+	int readChar() throws UnicodePanicException {
 		int i;
 		ByteBuffer buff=ByteBuffer.allocate(4);
 		try {
@@ -51,7 +51,7 @@ public class InputHelper {
 		buff.order(ByteOrder.LITTLE_ENDIAN);
 		char a=Config.currentSystemProperties.encoding.decode(buff.clear()).charAt(0);
 		if (Character.isSurrogate(a)) {
-				return -2;
+				throw new UnicodePanicException();
 		}
 		return buff.getChar(0);
 	}
@@ -68,6 +68,7 @@ public class InputHelper {
 			if (buff.capacity()==c) break;
 			if (str.length()==str.capacity()) return null;
 		}
+		if (str.length()==0) return null;
 		str.delete(str.length()-c, str.length());
 		return str.toString();
 	}
