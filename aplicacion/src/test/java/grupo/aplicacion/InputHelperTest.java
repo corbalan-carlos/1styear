@@ -90,9 +90,9 @@ public class InputHelperTest {
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
 		assertEquals("exception","a",input.readLine(""));
 	}*/
-	@Test
+	/*@Test
 	public void test() {
 		input=new InputHelper(System.in);
 		assertEquals("bruh","a",input.readLine());
-	}
+	}*/
 }

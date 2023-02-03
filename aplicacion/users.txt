@@ -1,0 +1,2 @@
+user:password:name:nif:email:address:birthdate:role
+carlos:a:a:a:a:a:a:User

@@ -28,8 +28,8 @@ public class SessionTest {
 			this.a= folder.newFile();
 			Config.userFile=a.getCanonicalPath();
 			FileWriter aW=new FileWriter(a);
-			aW.append("user:password:name:nif:email:address:birthdate:role\n");
-			aW.close();
+			aW.append("user:password:name:nif:email:address:birthdate:role");
+			aW.flush();
 		} catch (IOException e) {
 			
 		}
@@ -116,8 +116,6 @@ public class SessionTest {
 	public void newUser() {
 		Session session=new Session(System.in);
 		assertTrue("bruh",session.signup());
-		boolean a=true;
-		while(a);
 	}
 	@Test
 	public void wrongSignUp() {

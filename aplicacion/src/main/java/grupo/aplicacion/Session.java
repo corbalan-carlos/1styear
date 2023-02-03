@@ -1,16 +1,12 @@
 package grupo.aplicacion;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.BufferOverflowException;
 import java.nio.CharBuffer;
 
 public class Session {
@@ -32,7 +28,8 @@ public class Session {
 	}
 	public boolean login() throws IOException {
 		
-		StringBuilder userName=new StringBuilder(20); 
+		StringBuilder userName=new StringBuilder(20);
+		System.out.print("Nombre de usuario:\n");
 		userName.append(input.readLine());
 		return correctPassword(userName.toString());
 	}
@@ -44,6 +41,8 @@ public class Session {
 			try {
 				buff=CharBuffer.wrap(userFile.readLine());
 			} catch (NullPointerException e ) {
+				System.out.print("Contraseña\n");
+				input.readLine();
 				return false;
 			}
 			while (buff.hasRemaining()) {
@@ -51,10 +50,11 @@ public class Session {
 				if (l==':') break;
 				a.append(l);
 			}
+			
 			CharBuffer comparable=CharBuffer.allocate(20);
 			comparable.append(userName);
 			if (comparable.equals(a))  {
-				buffUser=CharBuffer.allocate(userName.length()+1+a.length());
+				buffUser=CharBuffer.allocate(userName.length()+1+buff.length());
 				buffUser.mark();
 				buffUser.append(userName);
 				buffUser.append(":");
@@ -62,7 +62,7 @@ public class Session {
 				break;
 			}
 		} while (true);
-		StringBuilder[] sArr =new StringBuilder[5];
+		StringBuilder[] sArr =new StringBuilder[8];
 		sArr[0]=new StringBuilder();
 		buffUser.reset();
 		for (int i=0,j=0;i<buffUser.length();i++) {
@@ -74,6 +74,7 @@ public class Session {
 			}
 			sArr[j].append(a);
 		}
+		System.out.print("Password:");
 		if (sArr[1].toString().equals(input.readLine())) {
 			this.user=new User();
 			user.username=sArr[0].toString();
@@ -111,10 +112,7 @@ public class Session {
 			}
 		} while (true);
 		System.out.print("Password:\n");
-		PrintStream buff =System.out;
-		System.setOut(null);
 		String password=input.readLine();
-		System.setOut(buff);
 		System.out.print("Name:\n");
 		String name=input.readLine();
 		System.out.print("NIF:\n");
@@ -125,7 +123,7 @@ public class Session {
 		String address=input.readLine();
 		System.out.print("Birthdate:\n");
 		String birthdate=input.readLine();
-		String role=null;
+		String role="User";
 		StringBuilder str =new StringBuilder();
 		str.append(username);
 		str.append(":");
@@ -145,19 +143,34 @@ public class Session {
 		FileWriter output=null;
 		try {
 			output=new FileWriter(Config.userFile,true );
-			output.write("\n");
-			output.write(str.toString());
+			output.append("\n");
+			output.append(str.toString());
+			output.flush();
 		} catch (IOException e) {
 			assert false:"bruh";
 		}
 		return true;
 	}
 	public void showUser() {
-		
+		System.out.print("Username: ");
+		System.out.print(user.username+"\n");
+		System.out.print("Name: ");
+		System.out.print(user.name+"\n");
+		System.out.print("NIF: ");
+		System.out.print(user.nif+"\n");
+		System.out.print("Email: ");
+		System.out.print(user.email+"\n");
+		System.out.print("Address: ");
+		System.out.print(user.address+"\n");
+		System.out.print("Birthdate: ");
+		System.out.print(user.birthdate+"\n");
+		System.out.print("Role: ");
+		System.out.print(user.role+"\n");
 	}
 	public void logout() {
 		user=null;
 		logged=false;
+		return;
 	}
 	
 }

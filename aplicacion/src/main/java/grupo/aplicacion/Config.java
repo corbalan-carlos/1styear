@@ -12,7 +12,7 @@ public class Config {
 	//mazeDir: la string con el pathname de donde se encuetran los assets de los laberintos
 	static public String mazeDir="mazes/";
 	//userFile: el fichero donde se encuentra la informacion sobre los usuarios
-	static public String userFile="users";
+	static public String userFile="users.txt";
 	//constSystetmProperties: un objeto de tipo SystemProperties que guarda las ideosincracias del sistema anfitrion
 	static public final SystemProperties constSystemProperties=new SystemProperties();
 	//currentSystemProperties: un objeto de tipo SystemProperties que guarda informacion sobre el sistema que se puede cambiar y manipular
