@@ -3,6 +3,10 @@ package grupo.aplicacion;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -34,7 +38,7 @@ public class Maze {
 		while ((a=in.readLine())!=null) {
 			v.add(a);
 		}
-		this.maploaded=new char[v.size()][v.get(0).length()];
+		this.map=new char[v.size()][v.get(0).length()];
 		for (int i=0;i<map.length;i++) {
 			for (int j=0;j<map[0].length;j++) {
 				map[i][j]=v.get(i).charAt(j);
@@ -70,7 +74,8 @@ public class Maze {
 		System.out.print("La coordenada J del final\n");
 		arr[3]=endJ=Integer.parseInt(teclado.readLine());
 		if (arr[0]<0|| arr[2]<0|| arr[0]>map.length|| arr[1]>map.length) {
-				System.out.print("Numero no valido\n");
+			
+					System.out.print("Numero no valido\n");
 				startI=-1;
 				endI=-1;
 				endI=-1;
@@ -86,7 +91,7 @@ public class Maze {
 			return false;
 		}
 		if (map[arr[0]][arr[1]]=='#') {
-			System.out.print("Casilla de entrada no valida");
+			System.out.print("Casilla de entrada no valida\n");
 			startI=-1;
 			endI=-1;
 			endI=-1;
@@ -94,7 +99,7 @@ public class Maze {
 			return false;
 		}
 		if (map[arr[2]][arr[3]]=='#') {
-			System.out.print("Casilla de salida no valida");
+			System.out.print("Casilla de salida no valida\n");
 			startI=-1;
 			endI=-1;
 			endI=-1;
@@ -104,6 +109,11 @@ public class Maze {
 		map[arr[0]][arr[1]]='E';
 		map[arr[2]][arr[3]]='S';
 		return true;
+	}
+	void solve() {
+		MazeSolver a=new MazeSolver();
+		assert a.solve();
+		a.printSolvedMaze();
 	}
 	private class MazeSolver {
 		class Cell {
@@ -115,61 +125,65 @@ public class Maze {
 				this.j=j;
 			}
 		}
-		boolean[][] runMap;
+		private boolean[][] runMap;
 		MazeSolver() {
 			this.runMap= new boolean[map.length][map[0].length];
 			this.stack=new Stack<>();
 		}
-		Stack<Cell> stack;
+		private Stack<Cell> stack;
 		boolean solve() {
+			stack.clear();
 			Cell start=new Cell(startI,startJ);
 			Cell currentCell=start;
+			runMap[startI][startJ]=true;
 			while (true) {
 				if (currentCell.i==endI&&currentCell.j==endJ) {
 					return  true;
 				}
-				if (currentCell.i+1>map.length) {
+				if (currentCell.i+1<map.length) {
 					if (map[currentCell.i+1][currentCell.j]!='#'
 							&& !runMap[currentCell.i+1][currentCell.j]) {
-						currentCell.d='>';
+						currentCell.d='v';
 						stack.push(currentCell);
 						runMap[currentCell.i+1][currentCell.j]=true;
 						currentCell=new Cell(currentCell.i+1,currentCell.j);
 						continue;
 					}
 				}
-				if (currentCell.j+1>map[0].length) {
+				if (currentCell.j+1<map[0].length) {
 					if (map[currentCell.i][currentCell.j+1]!='#'
 							&&!runMap[currentCell.i][currentCell.j+1]) {
-						currentCell.d='v';
+						currentCell.d='>';
 						runMap[currentCell.i][currentCell.j+1]=true;
 						stack.push(currentCell);
 						currentCell=new Cell(currentCell.i,currentCell.j+1);
 						continue;
 					}
 				}
-				if (currentCell.i-1<0) {
+				if (currentCell.i-1>=0) {
 					if (map[currentCell.i-1][currentCell.j]!='#'
 							&&!runMap[currentCell.i-1][currentCell.j]) {
-						currentCell.d='<';
+						currentCell.d='Ʌ';
 						runMap[currentCell.i-1][currentCell.j]=true;
 						stack.push(currentCell);
 						currentCell=new Cell(currentCell.i-1,currentCell.j);
 						continue;
 					}
 				}
-				if (currentCell.j-1<0) {
+				if (currentCell.j-1>=0) {
 					if (map[currentCell.i][currentCell.j-1]!='#'
 							&&!runMap[currentCell.i][currentCell.j-1]) {
-						currentCell.d='Ʌ';
+						currentCell.d='<';
 						stack.push(currentCell);
 						runMap[currentCell.i][currentCell.j-1]=true;
 						currentCell=new Cell(currentCell.i,currentCell.j-1);
 						continue;
 					}
 				}
-				if (stack.size()==0) return false;
-				stack.pop();
+				if (stack.size()==0) {
+					return false;
+				}
+				currentCell=stack.pop();
 			}
 		}
 		void printSolvedMaze() {
@@ -177,6 +191,7 @@ public class Maze {
 			for (Cell a:stack) {
 				tempMap[a.i][a.j]=a.d;
 			}
+			tempMap[startI][startJ]='E';
 			for (char[] c:tempMap) {
 				for (char d:c) {
 					System.out.print(d);
@@ -188,9 +203,11 @@ public class Maze {
 		boolean solveShortest() {
 			Cell start=new Cell(startI,startJ);
 			Cell currentCell=start;
+			stack.clear();
 			while (true) {
 				
 			}
 		}
+		
 	}
 }

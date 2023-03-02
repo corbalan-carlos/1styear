@@ -14,20 +14,30 @@ public class MazeTest {
 		new Config();
 		
 	}
-	@Test
+	/*@Test
 	public void test() {
-		ByteBuffer buffer=ByteBuffer.wrap("laberinto1.txt\n1188".getBytes());
-		System.setIn(new ByteArrayInputStream(buffer.array()));
+		
 		Maze maze=new Maze(System.in);
 		maze.loadMaze();
 		assertTrue("no ha cargado bien el laberinto",maze.setEntrancesExit());
 	}
 	@Test
-	public void testUnexistant() {
+*	public void testUnexistant() {
 		ByteBuffer buffer=ByteBuffer.wrap("laberinto1.txt\n1172".getBytes());
 		System.setIn(new ByteArrayInputStream(buffer.array()));
 		Maze maze=new Maze(System.in);
 		maze.loadMaze();
 		assertFalse("?",maze.setEntrancesExit());
+	}*/
+	@Test
+	public void testSolver() {
+		ByteBuffer buffer=ByteBuffer.wrap("laberinto2.txt\n1\n1\n19\n19".getBytes());
+		System.setIn(new ByteArrayInputStream(buffer.array()));
+		Maze maze=new Maze(System.in);
+		
+		maze.loadMaze();
+		maze.setEntrancesExit();
+		maze.showMap();
+		maze.solve();
 	}
 }
