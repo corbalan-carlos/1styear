@@ -1,4 +1,4 @@
-package Practica4;
+package practica4;
 public class Ejercicio9 {
 	int masFrecuenteInt(int arr[]) {
 		if (arr.length==1) return  arr[0]; 

@@ -1,4 +1,4 @@
-package Practica4;
+package practica4;
 import java.util.Scanner;
 public class Ejercicio3 {
 	static 	Scanner input=new Scanner(System.in);

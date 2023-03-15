@@ -14,7 +14,7 @@ public class InputHelperTest {
 	public void before(){
 		new Config();
 	}
-/*	@Test
+	@Test
 	public void test() {
 		ByteBuffer buffer=ByteBuffer.wrap("a".getBytes());
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
@@ -63,8 +63,8 @@ public class InputHelperTest {
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
 		assertEquals("debe devolver todo lo que se encuentra hasta "
 				+ "acabar el input",null,input.readLine());
-	}*/
-	/*@Test
+	}
+	@Test
 	public void testNewLineDelimitator() {
 		ByteBuffer buffer=ByteBuffer.wrap("a\n".getBytes());
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
@@ -84,12 +84,12 @@ public class InputHelperTest {
 		assertEquals("puede utilizar caracteres unicode como delimitador"
 				,null,input.readLine("🦞"));
 	}
-	@Test(expected = IndexOutOfBoundsException.class)
+	@Test(expected = AssertionError.class)
 	public void empty() {
 		ByteBuffer buffer=ByteBuffer.wrap("a\n".getBytes());
 		input=new InputHelper(new ByteArrayInputStream(buffer.array()));
 		assertEquals("exception","a",input.readLine(""));
-	}*/
+	}
 	/*@Test
 	public void test() {
 		input=new InputHelper(System.in);

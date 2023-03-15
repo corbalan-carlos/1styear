@@ -1,32 +1,20 @@
 package test;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-public class test {
 
-	public static void main(String[] args) {
-		int arr[]= {1,2};
-		int k=1;
-		int x=2;
-		List<Integer> list=new ArrayList<>();
-		int minPointer=0;
-		int maxPointer=k;
-		for (int i=0;i<arr.length;i++) {
-			if (Math.abs(arr[minPointer]-x)<Math.abs(arr[maxPointer]-x) 
-				|| (Math.abs(arr[minPointer]-x)<Math.abs(arr[maxPointer]-x) && arr[minPointer]<arr[maxPointer])) {
-				minPointer++;
-				maxPointer++;
-			} else  if (Math.abs(arr[minPointer]-x)>Math.abs(arr[maxPointer]-x) 
-				|| (Math.abs(arr[minPointer]-x)>Math.abs(arr[maxPointer]-x) && arr[minPointer]>arr[maxPointer])) {
-				minPointer--;
-				maxPointer--;
-			}
-				
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class test {
+	public static void main(String args[]) {
+		File test=new File("src/test/Untitled 1");
+		Scanner s=null;
+		try {
+			s=new Scanner(test);
+		} catch (FileNotFoundException E) {
+			assert false;
 		}
-		for (int i=minPointer;i<maxPointer;i++) list.add(arr[i]);
-		for( Integer n:list) {
-			System.out.print(n+"\n");
+		while (true) {
+			System.out.print(s.nextLine()+" ");
 		}
 	}
-
 }
