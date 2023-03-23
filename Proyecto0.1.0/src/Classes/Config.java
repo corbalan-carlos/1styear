@@ -8,4 +8,5 @@ public class Config {
 	public static final String GOODBYE = "\nFIN DE PROGRAMA";
 	public static final String UNLOGGED_MENU = "MEN\u00da\n-----------\n1- Iniciar sesion\n2- Registro\n0- Salir\n\nSelecciona una opcion: ";
 	public static final String LOGGED_MENU = "MEN\u00da\n-----------\n1- Cargar laberinto\n2- Ver laberinto actual\n3- Establecer casillas de entrada y salida\n4- Buscar caminos\n5- Ver usuario actual\n6- Cerrar sesion\n0- Salir\n\nSelecciona una opcion: ";
+	public static final String MAZE_PATH = "./assets/mazes/";
 }
