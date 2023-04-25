@@ -1,28 +1,24 @@
 
+import java.util.*;
+
 public class Ejercicio13 {
-	static double discriminante;
-	enum Resultado {
-		DEGENARADA (0),
-		DGT0 (2),
-		DE0(1),
-		DLT0 (0);
-		int nDeRespuestas;
-		Resultado(int a) {
-			this.nDeRespuestas=a;
+	static Scanner scanner=new Scanner(System.in);
+	public static  void main (String args[]) {
+		Ejercicio13 a=new Ejercicio13();
+		a.evaluarDiscriminante();
+	}
+	private void evaluarDiscriminante() {
+		double x2,x,number,result1,result2;
+		x2=scanner.nextInt();
+		x=scanner.nextInt();
+		number=scanner.nextInt();
+		if (((x*x)-(4*x2*number))<0) {
+			System.out.print("La ecuación no tiene soluciones reales");
+			scanner.close();
+			return;
 		}
+		result1=(((0-x)+(Math.sqrt((x*x)-(4*x2*number))))/(2*x2));
+		result2=(((0-x)-(Math.sqrt((x*x)-(4*x2*number))))/(2*x2));
+		System.out.print("Las soluciones son "+result1+" y "+result2);
 	}
-	public static void main(String[] args) {
-		
-
-	}
-	static Resultado evaluarDiscriminante(double a,double b, double c) {
-		if (a==0) return Resultado.DEGENARADA;
-		discriminante=Math.pow(b, 2)-4*a*c;
-		switch  ((int) discriminante) {
-			case 0: return Resultado.DE0;
-					break;
-			case 
-		}
-	}
-
 }
