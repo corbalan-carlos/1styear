@@ -8,14 +8,15 @@
 import Classes.Config;
 import Classes.Session;
 import Classes.Interface;
+import Classes.Maze;
 
 public class Main {
 	public static Session userSession = new Session();
-	
+	private static  Maze maze;
 	public static void main(String[] args) {
 		System.out.println(Config.WELCOME);
 		int option;
-		
+		maze=null;
 		do {
 			if(userSession.isLogged()) {
 				// Menu con login
@@ -44,18 +45,36 @@ public class Main {
 	}
 	
 	public static void loggedAction(int option) {
+		
 		switch(option) {
 		case 1:
-			System.out.println("PROXIMAMENTE");
+			maze=new Maze();
+			if (!maze.loadMaze()) {
+				maze=null;
+			}
 			break;
 		case 2:
-			System.out.println("PROXIMAMENTE");
+			if (maze==null)  {
+				System.out.print("No hay ningun laberinto cargado\n");
+				break;
+			}
+			maze.showMap();
 			break;
 		case 3:
-			System.out.println("PROXIMAMENTE");
+			if (maze==null)  {
+				System.out.print("No hay ningun laberinto cargado\n");
+				break;
+			}
+			if (!maze.setEntrancesExit()) {
+				System.out.print("Ha habido un problema a la hora de marcar las casillas\n");
+			}
 			break;
 		case 4:
-			System.out.println("PROXIMAMENTE");
+			if (maze==null)  {
+				System.out.print("No hay ningun laberinto cargado\n");
+				break;
+			}
+			maze.solve();
 			break;
 		case 5:
 			userSession.showUser();

@@ -25,10 +25,10 @@ public class Maze {
 	public Maze() {
 		this.loaded=false;
 	}
-	boolean loadMaze() { 
+	public boolean loadMaze() { 
 		System.out.print("Seleccione el laberinto a cargar\n");
 		this.filename=Interface.getString();
-		File file=new File(filename);
+		File file=new File(Config.MAZE_PATH+filename);
 		try {
 			fileS=new Scanner(file);
 			
@@ -113,10 +113,13 @@ public class Maze {
 		map[arr[2]][arr[3]]='S';
 		return true;
 	}
-	void solve() {
+	public void solve() {
 		MazeSolver a=new MazeSolver();
-		assert a.solve();
-		a.printSolvedMaze();
+		if (a.solve()) {
+			a.printSolvedMaze();
+			return;
+		}
+		System.out.print("No se ha podido encontrar una solucion al laberinto\n");
 	}
 	private class MazeSolver {
 		class Cell {
@@ -202,14 +205,6 @@ public class Maze {
 				System.out.print("\n");
 			}
 			
-		}
-		boolean solveShortest() {
-			Cell start=new Cell(startI,startJ);
-			Cell currentCell=start;
-			stack.clear();
-			while (true) {
-				
-			}
 		}
 		
 	}
