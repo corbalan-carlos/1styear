@@ -52,3 +52,19 @@ quicksort (x:xs) =
     let a=quicksort [ y| y<-xs, y<x]
         b=quicksort [ y| y<-xs, y>x]
     in a++[x]++b
+
+multThree:: (Num a) => a->(a->(a->a))
+multThree x y z= x*y*z
+
+zipWith':: (c-> d ->b) -> [c]-> [d] -> [b]
+zipWith' _ _ [] = []
+zipWith' _ [] _ = []
+zipWith' x (y:ys) (z:zs) = x y z : zipWith x ys zs
+
+pow'::Int->Int->Int
+pow' _ 0 = 1
+pow' x y = x * pow' x (y-1) 
+
+flip':: (a->b->c) -> (b->a->c)
+flip' f y x = g x y
+
