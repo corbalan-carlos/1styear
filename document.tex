@@ -1,0 +1,100 @@
+\documentclass{article}
+
+\title{Conexión a MySQL desde Haskell}
+\date{\today}
+\author{Carlos Corbalan Andreu}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{wrapfig}
+\usepackage{minted}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[bottom]{footmisc}
+\usepackage{qtree}
+\hypersetup{
+  colorlinks,
+  allcolors=.,
+  urlcolor=blue,
+}
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\begin{figure}[h]
+\includegraphics[width=\linewidth]{Desktop/MySQL to Haskell.png}
+\end{figure}
+\newpage
+\tableofcontents
+\pagenumbering{arabic}
+\newpage
+\section{Introducción}
+	\paragraph{} {\huge E}n  este documento veremos detalles sobre Haskell, MySQL, ODBC y como conectarse entre ellos mediante ODBC. En el primer punto estudiaremos Haskell junto con el paradigma funcional, calculo lambda, el no determinismo y GHC y Cabal, importantes componentes del Toolchain de desarollo de Haskell. A continuación MySQL y algunas de sus ideosincracias; seguido por ODBC. Seguiremos con los paquetes y algunos de sus detalles necesarios para poner en marcha el proyecto. Continuaremos con la configuracion necesaria para tenerlo todo preparado para realizar la conexion y empezar a realizar consultas hacia la base de datos. Para ir acabando hare referencias a todos los problemas que me encontre realizando el proyecto y por ultimo la conclusion y bibliografia.
+
+\section{Haskell}
+	\paragraph{} {\Huge H}askell es un lenguaje de programacion de utilidad general de paradigma funcional, con evaluacion vaga compilado. En este capitulo echaremos un vistazo a todo lo que significa esto y mas.
+
+	\subsection{Explicacion} 
+		\paragraph{} Como hemos mencionado anteriormente Haskell es un lenguaje funcional, esto es probablemente lo mas interesante que se puede decir sobre el lenguaje, el paradigma funcional es uno bastante interesante que cuenta con ciertos elementos sintacticos y semanticos que se han incorporado poco en los lenguajes de programacion modernos (ej. lambdas en java).
+		\begin{figure}[h]
+			\Tree [.Paradigma [.Declarativo Funcional {Orientado a BBDD} ] [.Imperativo {Orientado a Objetos} Procedural ]]
+			\caption{Diagrama simplificado de la division de paradigmas de lenguajes de programacion}
+		\end{figure}
+		\newpage
+		\paragraph{} Las principales caracteristicas del paradigma funcional son las siguientes:
+		\begin{enumerate}
+			\item Funciones como variables: En lenguajes con caracteristicas funcionales se permiten pasr lo que se llaman lambdas como variables. Estos lambdas no son mas que funciones. El siguiente codigo de Java por ejemplo toma un lambda y lo aplica sobre una variable \verb+var+}
+			\begin{listing}[h]
+				\begin{minted}{Java}
+...
+myFunc(( a-> System.out.print(a), var);
+...
+private static void myFunc(Consumer<T> lambda, T var) {
+lambda.accept(var);
+}
+				\end{minted}
+				\caption{Ejemplo de lambda en Java}
+			\end{listing}
+			Este solo es un ejemplo en lenguaje imperativo pero si por ejemplo cogemos Haskell, veremos que es mucho mas simple. En el siguiente ejemplo \verb-(+)- es una funcion binaria que suma dos numeros y la hemos pasado como si fuera una variable normal y corriente (Porque para este tipo de lenguage lo son).
+			\begin{listing}[h]
+				\begin{minted}{Haskell}
+let i =0 in foldl (+) i [1..10]
+				\end{minted}
+				\caption{Ejemplo de como las funciones se pueden pasar como variables en Haskell}
+			\end{listing}
+			\item No efectos secundarios: Una funcion es pura cuando no hacen nada mas que devolver un valor, no mantienen estado interno y a la misma entrada devuelve siempre la misma salida. Por ejemplo si llamamos la funcion \verb-floor- en C con la entrada 3.141598, nos devolvera siempre 3; lo que significa que es una funcion pura. En el siguiente codigo muestro un ejemplo de una funcion no pura en C.
+			\begin{listing}[h]
+				\begin{minted}{C}
+int main(void) {
+        static int sum=0;
+        myfun(10,&sum));
+        myfun(10,&sum));
+}
+int myfun(int i,int* sum) {
+        return *sum+=i;
+}
+				\end{minted}
+			\caption{Ejemplo de funcion no pura en C}
+			\end{listing}
+			Aqui la funcion es pura por una simple razon, aunque llamamos \verb+myfun+ 2 veces con los mismos parametros nos devuelve dos resultados diferentes. Esto tiene mucho que ver con el determinismo, un concepto que estudiaremos ahora despues.
+		\end{enumerate}
+		\paragraph Estas propiedades tienen un fundamento matematico detras de ellas, mientras que los lenguajes imperativos estan basados en maquina de estados, los lenguajes funcionales estan basados en el calculo lambda\footnote{Realmente estan basados en calculo lambda con tipos por razones que mas tarde se haran obvias}, ahora despues le echaremos un vistazo en mayor profundidad.
+
+		\paragraph{} Esto son reglas basicas del lenguage Haskell al formar parte de los lenguages funcionales, a parte de estas Haskell cuenta con 2 propiedades mas.
+		
+		\paragraph{Evaluacion vaga:} Esto significa que una expresion no es evaluada hasta que se necesitapermitiendo mas controlador al programador sobre como se puede conseguir menor huella de memoria o ejecucion pero si no lo utilizamos bien puede ocurrir al contrario.
+		
+		\paragraph{Compilado:} Esta propiedad le da una velocidad superior a otros lenguajes y una mayor robustez a la hora de ejecutarse.
+
+		\subsection{Calculo Lambda}
+			\paragraph{} El calculo lambda es un tipo de calculo que se basa en expresiones las cuales estan formadas por:
+			\begin{enumerate}
+				\item Variables Esto es simple variables, como las de programacion pero con un pequeño caveat, solo pueden ser funciones.
+				\item Los simbolos de abstraccion $\lambda$ y \verb+.+. El simbolo $\lambda$ se utiliza para denotar la declaracion de la funcion (Los parametros) y el \verb+.+ para denotar la aplicacion de la funcion (El calculo que hacer)
+				\item Parentesis. Igual que en mates, para dar precedencia a ciertas partes de la expresion antes que otras.
+			\end{enumerate}
+			\paragraph{} Y ya está. Eso es todo lo que puedes con calculo lambda, no hay numeros, no hay multiplicaciones ni divisiones, ni incluso sumas. Pero aun así, se puede hacer todo lo que teoricamente se podria hacer con una maquina de turing. 
+
+\end{document}

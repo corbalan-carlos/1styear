@@ -3,7 +3,6 @@ case y of   (0,0) -> "FizzBuzz"
                   (_,0) -> "Buzz"
                   (0,_) -> "Fizz"
                   (_,_) -> show y
---}
 fizzBuzz:: [String]
 fizzBuzz= [(\ y-> case y of (0,0) -> "FizzBuzz"
                             (_,0) -> "Buzz"
@@ -66,5 +65,50 @@ pow' _ 0 = 1
 pow' x y = x * pow' x (y-1) 
 
 flip':: (a->b->c) -> (b->a->c)
-flip' f y x = g x y
+flip' f y x = f x y
 
+map' :: (a->b) -> [a] -> [b]
+map' _ [] = []
+map' f (x:xs) = (f x): map' f xs
+
+filter' :: (a->Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' f (x:xs) 
+    | f x == True = x : filter' f xs
+    | otherwise = filter' f xs
+
+
+takeWhile' :: (a->Bool) -> [a] -> [a]
+takeWhile' _ [] = []
+takeWhile' f (x:xs) 
+    | f x == True = x : takeWhile' f xs
+    | otherwise = []
+
+chain :: (Integral a) => a -> [a]
+chain 1 = [1]
+chain n
+    | even n = n:chain (div n 2)
+    | odd n  = n:chain (n*3+1)
+
+numLongChains :: Int
+numLongChains = length (filter' isLong (map' chain [1..100]))
+    where isLong xs= length xs>15
+--}
+
+module BTree
+( Tree
+,depthSearch
+) where
+
+data Tree k = Nothing | Node k (Tree k) (Tree k) deriving (Show)
+
+depthSearch :: Tree a -> a -> Maybe a
+depthSearch n x =
+    let y = (\(Node a _ _)-> a) n in 
+        if y == x then 
+           Just x
+        else if depthSearch  ((\(Node _ b _) -> b) n) x == x then
+        Just x 
+        else if depthSearch ((\(Node _ _ b) -> b) n) x == x then 
+        Just x 
+        else Prelude.Nothing
