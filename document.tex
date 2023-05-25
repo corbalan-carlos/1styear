@@ -13,7 +13,10 @@
 \usepackage{minted}
 \usepackage{color}
 \usepackage{xcolor}
-\usepackage[bottom]{footmisc}
+\usepackage{footmisc}
+\usepackage{multicol}
+\usepackage{layout}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{qtree}
 \hypersetup{
   colorlinks,
@@ -24,7 +27,7 @@
 \pagenumbering{gobble}
 \maketitle
 \begin{figure}[h]
-\includegraphics[width=\linewidth]{Desktop/MySQL to Haskell.png}
+\includegraphics[width=\textwidth,height=400pt]{Desktop/MySQL to Haskell.png}
 \end{figure}
 \newpage
 \tableofcontents
@@ -78,9 +81,9 @@ int myfun(int i,int* sum) {
 				\end{minted}
 			\caption{Ejemplo de funcion no pura en C}
 			\end{listing}
-			Aqui la funcion es pura por una simple razon, aunque llamamos \verb+myfun+ 2 veces con los mismos parametros nos devuelve dos resultados diferentes. Esto tiene mucho que ver con el determinismo, un concepto que estudiaremos ahora despues.
+			Aqui la funcion es pura por una simple razon, hay estados, haciendo que cuando llamamos de nuevo a \verb+myfun(10,&sum)+ nos devuelve 20 aunque hayamos pasado los mismo parametros.
 		\end{enumerate}
-		\paragraph Estas propiedades tienen un fundamento matematico detras de ellas, mientras que los lenguajes imperativos estan basados en maquina de estados, los lenguajes funcionales estan basados en el calculo lambda\footnote{Realmente estan basados en calculo lambda con tipos por razones que mas tarde se haran obvias}, ahora despues le echaremos un vistazo en mayor profundidad.
+		\paragraph{} Estas propiedades tienen un fundamento matematico detras de ellas, mientras que los lenguajes imperativos estan basados en maquina de estados, los lenguajes funcionales estan basados en el calculo lambda,hora despues le echaremos un vistazo en mayor profundidad.
 
 		\paragraph{} Esto son reglas basicas del lenguage Haskell al formar parte de los lenguages funcionales, a parte de estas Haskell cuenta con 2 propiedades mas.
 		
@@ -93,8 +96,99 @@ int myfun(int i,int* sum) {
 			\begin{enumerate}
 				\item Variables Esto es simple variables, como las de programacion pero con un pequeño caveat, solo pueden ser funciones.
 				\item Los simbolos de abstraccion $\lambda$ y \verb+.+. El simbolo $\lambda$ se utiliza para denotar la declaracion de la funcion (Los parametros) y el \verb+.+ para denotar la aplicacion de la funcion (El calculo que hacer)
-				\item Parentesis. Igual que en mates, para dar precedencia a ciertas partes de la expresion antes que otras.
+				\item Parentesis. Igual que en las matematicas a las que estamos acostumbrados, para dar precedencia a ciertas partes de la expresion antes que otras.
 			\end{enumerate}
 			\paragraph{} Y ya está. Eso es todo lo que puedes con calculo lambda, no hay numeros, no hay multiplicaciones ni divisiones, ni incluso sumas. Pero aun así, se puede hacer todo lo que teoricamente se podria hacer con una maquina de turing. 
+			\begin{listing}[h]
+				\[ 
+				\lambda x.x 
+				\]
+				\caption{La funcion de identidad, toma un paramatro y devulve ese mismo parametro}
+			\end{listing}
+			\begin{listing}[h]
+				\[
+				\lambda xy.x
+				\]
+				\caption{La llamda funcion K}
+			\end{listing}
+			\begin{listing}[h!]
+				\[
+				\lambda xyz.xz(yz)
+				\]
+				\caption{La llamada funcion S}
+			\end{listing}
+			\paragraph{} Estos son las llamadas funciones\footnote{Realmente se llaman combinadores, pero un combinador es un tipo de funcion} I,K,S respectivamente. De hecho con estas funciones podemos hacer todo lo que podria hacer calculo lambda o una maquina de turing.
+		\subsection{Funciones puras y no efectos secudarios}
+			\paragraph{} Esto es simple de entender, no puede haber efectos secundarios. Pero realmente si no tenemos efectos secundarios como podemos leer o escribir ficheros. Estas funciones toman una entrada y guardan un parametro en un fichero, aunque es determinista no se puede considerar una funcion pura y en Haskell queremos tener funciones puras.
+			\begin{figure}[h]\centering
+				\includegraphics{Desktop/non-determinism.png}
+				\caption{El ejemplo de leer ficheros se hace mas claro con una representacion grafica}
+			\end{figure}
+
+			\paragraph{} La verdad es que no podemos. Si queremos que nuestro programa sea util tenemos que tener efectos secundarios y Haskell pese a ser funcional soporta funciones con efectos secundarios, es un lenguaje de proposito general al fin al cabo. Esto es importante mencionarlo ya que trabajaremos con funciones de este tipo y como he mencionado intentaremos mantenerlas al minimo posible.
+	\subsection{GHC y Cabal}
+		\paragraph{} GHC y Cabal son dos partes extremedamente importantes de la toolchain de Haskell. Siendo GHC el \verb+Glasgow Haskell Compiler+ y Cabal el encargado de descargar e importar limbrerias desde Hackage, el sitio oficial donde publicar paquetes de Haskell.
+		\paragraph{} Obviamente sin GHC no podemos hacer nada pero con la ayuda de Cabal descargaremos un par de paquetes para poner en funcionamiento la conexión con la BBDD.
+\section{MySQL}
+	\paragraph{} {\huge M}ySQL es un gestor de base de datos relacional este capitulo lo utilizaremos para indagar un poco mas en el gestor.
+	\subsection{Explicacion}
+		\paragraph{} MySQL, es un gestor de base de datos relacional, utilizando SQL como el lenguaje para realizar las consultas. SQL es un lenguaje declarativo casi estandarizado por lo tanto podriamos decir que vamos a hacer consultas sin tocar un lenguaje imperativo.
+
+	\paragraph{} Cabe hacer la distincion de que existe MariaDB como un fork de MySQL, es importante saber esro porque en algunas distribuciones de Linux no se incluye el servidor MySQL si no el de MariaDB y estos dos difieren ligeramente a la hora de preparar el entorno
+
+\section{ODBC}
+	\paragraph{} {\huge O}DBC es una API estandarizada para acceder a gestores de bases de datos teniendo con principal objetivo hacerlo relativamente independiente del gestor y del sistema operativo
+	\subsection{Explicacion}
+		\paragraph{} ODBC utiliza un controlador para conseguir la independencia entre la aplicacion y el gestor. Lo interesante de esto es que cualquier aplicacion que pueda acceder y leer la informacion correctamente del controlador puede acceder a cualquier base de datos compatible con ODBC
+
+\section{Setup}
+	\paragraph{} {\huge U}na vez explicado las partes necesarias que vamos a utilizar (Haskell, ODBC y MySQL) en esta seccion vamos a explicar los paquetes y otros posibles componentes.
+	\paragraph{} Esta parte asume que se ejecutan todos los comandos como \verb+root+
+	\subsection{Entorno}
+		\paragraph{} Se utilizará una maquina virtual de VirtualBox Debian 11 bullseye 
+	\subsection{Paquetes}
+		\paragraph{} Instalaremos los siguientes paquetes desde los repositorios de Debian:
+		\begin{enumerate}
+			\item \verb+ghc+: El compilador de haskell 
+			\item \verb+unixodbc+: Este es el administrador de drivers ODBC para unix
+			\item \verb+cabal-install+: El gestor de paquetes de ghc
+			\item \verb+unixodbc-dev+: Las librerias de desarrollo para unixodbc
+		\end{enumerate}
+		\paragraph{} Y despues con \verb+cabal install+ instalamos los siguientes paquetes (Al igual que con apt tenemos que actulizar la lista de paquetes con \verb+cabal update+)
+		\begin{enumerate}
+			\item \verb+hdbc+: Esta es la libreria con las bindings necesarias para realizar consultas
+			\item \verb+HDBC-odcb+: Este es el backend que comunica con unixodbc
+		\end{enumerate}
+		\subsection{MySQL}
+			\paragraph{} Hay un ligero problema, MySQL no viene en las repos de Debian, viene MariaDB así que vamos a tener que añadir una repo externa para poder descargar MySQL desde \verb+apt+
+
+			\paragraph{} En caso que se este utilizando otra distro no seria necesario hacer esto pero si se da el caso empezaremos descargando los siguientes paquetes \verb+software-properties-common apt-transport-https gpg+ (Estos son los paquetes que he necesitado yo, puede ser que basado en la distro que se este utilizando se necesiten otros o incluse esten todos los necesarios instalados)
+			
+			\paragraph{} Ejecutamos el siguiente comando \\{\small\verb+wget -O- http://repo.mysql.com/RPM-GPG-KEY-mysql-2022|gpg --dearmor > /usr/share/keyrings/mysql.gpg+}
+			
+			\paragraph{} Continuamos con este comando \\{\small\verb+echo 'deb [signed-by=/usr/share/keyrings/mysql.gpg] http://repo.mysql.com/apt/debian bullseye mysql-8.0' \+\\\verb+>> /etc/apt/sources.list+}
+			\paragraph{} Actualizamos los paquetes e instalamos \verb+mysql-server+, cuando este configurando el paquete nos apareceran un par de propmts, la primera para poner contraseña al usuario \verb+root+ y la segunda para seleccionar que tipo de encriptacion queremos para las contraseñas
+			
+			\paragraph{} Solo falta una cosa, el controlador de \verb+mysql-odbc+, para eso ejecutamos el siguiente comando \\\verb+wget https://dev.mysql.com/get/Downloads/Connector-ODBC/8.0/mysql-connector-+\\\verb+odbc-8.0.33-linux-glibc2.28-x86-64bit.tar.gz+, lo desempaquetamos con \\\verb+zcat mysql-connector-odbc-8.0.33-linux-glibc2.28-x86-64bit.tar.gz|tar x+, entramos en el directorio resultante y copiamos los dos ficheros \\\verb+libmyodbca.so libmyodbc8w.so+ a \verb+/usr/lib/lib64+
+\newpage
+\section{Configuracion}
+	\paragraph{} {\huge Y}a tenemos todos los paquetes necesarios, ahora procederemos a configurar los componentes
+	\subsection{ODBC}
+		\paragraph{} Para configurar ODBC editaremos con nuestro editor de confianza el fichero \verb+/etc/odbc.ini+ (O lo creamos en el caso que no exista) y añadimos el siguiente contenido:
+		\begin{listing}[h]
+\verb+[MySQL]+\\
+\verb+Driver = /usr/lib64/libmyodbc8w.so+\\
+\verb+Host = localhost+
+			\caption{odbc.ini basico de ejemplo}
+		\end{listing}
+		\paragraph{} Para comprobar que funciona añadiremos un usario en nuestra base de datos, para eso entramos a la base de datos y ejecutamos \verb+create user username identified by 'password'+. Una vez hecho salimos y ejecutamos el siguiente comando \verb+isql -v MySQL username password+. Esto es para conectarnos a la base de datos mediante ODBC, si nos muestra lo siguiente:\\
+\verb/+---------------------------------------+/\\
+\verb/| Connected!                            |/\\
+\verb/|                                       |/\\
+\verb/| sql-statement                         |/\\
+\verb/| help [tablename]                      |/\\
+\verb/| quit                                  |/\\
+\verb/|                                       |/\\
+\verb/+---------------------------------------+/\\
 
 \end{document}
